@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 📝 EDYTUJ TUTAJ: tytuł karty przeglądarki -->
+  <title>[Twoje Imię i Nazwisko] — Portfolio i CV</title>
+  <meta name="description" content="Portfolio i CV [Twoje Imię i Nazwisko] — humanista, badacz, publicysta." />
+
+  <!-- Czcionki Google Fonts -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400&display=swap');
+  </style>
+
+  <style>
+    /* ============================================================
+       ZMIENNE CSS — SYSTEM PROJEKTOWY
+       ============================================================ */
+    :root {
+      --bg:             #f2ead8;
+      --text-primary:   #0a0908;
+      --text-mid:       #3a3530;
+      --text-muted:     #8a8070;
+      --border-subtle:  #d2cbba;
+      --border-light:   #ebe6d7;
+      --link-visited:   #0000ee;
+      --surface-hover:  #eee9dc;
+
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-mono:  'JetBrains Mono', ui-monospace, monospace;
+
+      --sp-1:  4px;
+      --sp-2:  8px;
+      --sp-3:  24px;
+      --sp-4:  32px;
+      --sp-5:  80px;
+
+      --max-w: 1024px;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================================
+       TYPOGRAFIA
+       ============================================================ */
+    h1 {
+      font-size: clamp(48px, 8vw, 86px);
+      font-weight: 700;
+      line-height: 1.2;
+      font-family: var(--font-serif);
+    }
+    h2 {
+      font-size: clamp(32px, 5vw, 61px);
+      font-weight: 700;
+      line-height: 1.2;
+      font-family: var(--font-serif);
+    }
+    h3 {
+      font-size: 22px;
+      font-weight: 700;
+      font-family: var(--font-serif);
+      line-height: 1.3;
+    }
+    p { font-size: 18px; line-height: 1.5; }
+
+    .text-small  { font-size: 16px; line-height: 1.5; }
+    .text-caption { font-size: 12px; line-height: 1.4; color: var(--text-muted); }
+    .text-mono   {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .text-muted  { color: var(--text-muted); }
+    .text-mid    { color: var(--text-mid); }
+
+    /* ============================================================
+       LINKI
+       ============================================================ */
+    a {
+      color: var(--text-mid);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s ease;
+    }
+    a:hover  { color: var(--text-primary); }
+    a:visited { color: var(--link-visited); }
+
+    /* Wariant przyciskowy */
+    .link-btn {
+      display: inline-block;
+      color: var(--text-mid);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 2px;
+      font-size: 16px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .link-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+    .link-btn:visited { color: var(--link-visited); }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--sp-5);
+    }
+
+    section {
+      padding: var(--sp-5) 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* ============================================================
+       ANIMACJA WEJŚCIA
+       ============================================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    .fade-in.visible { opacity: 1; }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    #header {
+      padding: var(--sp-5) 0 var(--sp-4);
+      border-top: none;
+    }
+
+    .header-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--sp-4);
+      gap: var(--sp-3);
+      flex-wrap: wrap;
+    }
+
+    .header-tagline {
+      font-size: 16px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: var(--sp-2);
+    }
+
+    .header-cv-link {
+      flex-shrink: 0;
+      margin-top: var(--sp-2);
+    }
+
+    /* ============================================================
+       NAWIGACJA
+       ============================================================ */
+    #nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      padding: var(--sp-2) 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      gap: var(--sp-4);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-name {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-right: auto;
+    }
+    .nav-name:hover { color: var(--text-primary); }
+    .nav-name:visited { color: var(--text-muted); }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--text-mid);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .nav-link:hover {
+      color: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+    .nav-link:visited { color: var(--text-mid); }
+
+    /* ============================================================
+       O MNIE / WYKSZTAŁCENIE
+       ============================================================ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-5);
+      margin-top: var(--sp-4);
+    }
+
+    .education-list {
+      list-style: none;
+      margin-top: var(--sp-3);
+    }
+
+    .education-list li {
+      padding: var(--sp-3) 0;
+      border-top: 1px solid var(--border-light);
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: var(--sp-3);
+    }
+
+    .education-list li:first-child { border-top: none; }
+
+    .edu-year {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding-top: 3px;
+    }
+
+    /* ============================================================
+       DOŚWIADCZENIE / LINIA CZASOWA
+       ============================================================ */
+    .timeline {
+      margin-top: var(--sp-4);
+      list-style: none;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: var(--sp-3);
+      padding: var(--sp-3) 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .timeline-item:first-child { border-top: none; }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding-top: 4px;
+      line-height: 1.6;
+    }
+
+    .timeline-title { font-weight: 700; margin-bottom: var(--sp-1); }
+    .timeline-org {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-2);
+      font-style: italic;
+    }
+    .timeline-desc { font-size: 16px; color: var(--text-mid); line-height: 1.5; }
+
+    /* ============================================================
+       PROJEKTY / KARTY
+       ============================================================ */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--sp-4);
+      margin-top: var(--sp-4);
+    }
+
+    .project-card {
+      border: 1px solid var(--border-subtle);
+      padding: var(--sp-4);
+      transition: background 0.2s ease;
+    }
+
+    .project-card:hover { background: var(--surface-hover); }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-2);
+    }
+
+    .project-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: var(--sp-2);
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.5;
+      margin-bottom: var(--sp-3);
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+
+    /* ============================================================
+       KONTAKT
+       ============================================================ */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-5);
+      margin-top: var(--sp-4);
+    }
+
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-2);
+      display: block;
+    }
+
+    .contact-value {
+      font-size: 18px;
+      margin-bottom: var(--sp-4);
+    }
+
+    .social-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    .social-list li {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-2);
+    }
+
+    .social-platform {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      min-width: 120px;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: var(--sp-4) 0 var(--sp-5);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+    }
+
+    .footer-nav a {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .footer-nav a:hover {
+      color: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+    .footer-nav a:visited { color: var(--text-muted); }
+
+    /* ============================================================
+       RESPONSYWNOŚĆ
+       ============================================================ */
+    @media (max-width: 600px) {
+      .container { padding: 0 var(--sp-3); }
+
+      #header { padding: var(--sp-4) 0 var(--sp-3); }
+
+      .nav-inner { gap: var(--sp-3); }
+      .nav-name  { display: none; }
+
+      .about-grid     { grid-template-columns: 1fr; gap: var(--sp-4); }
+      .contact-grid   { grid-template-columns: 1fr; gap: var(--sp-4); }
+
+      .timeline-item  { grid-template-columns: 1fr; gap: var(--sp-1); }
+      .timeline-date  { padding-top: 0; }
+
+      .education-list li { grid-template-columns: 1fr; gap: var(--sp-1); }
+
+      section { padding: var(--sp-4) 0; }
+    }
+
+    @media (max-width: 768px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       SEPARATOR DEKORACYJNY
+       ============================================================ */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--sp-3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header id="header">
+    <div class="container">
+
+      <div class="header-meta fade-in">
+        <div>
+          <!-- 📝 EDYTUJ TUTAJ: imię i nazwisko -->
+          <h1>[Twoje Imię<br>i Nazwisko]</h1>
+          <!-- 📝 EDYTUJ TUTAJ: motto lub specjalizacja (1–2 zdania) -->
+          <p class="header-tagline">Historyk idei · badacz literatury nowoczesnej · eseista</p>
+        </div>
+        <div class="header-cv-link delay-2">
+          <!-- 📝 EDYTUJ TUTAJ: podmień href na link do swojego PDF z CV, np. "cv.pdf" lub link zewnętrzny -->
+          <a href="cv.pdf" class="link-btn" target="_blank" rel="noopener">Pobierz CV ↓</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       NAWIGACJA PRZYKLEJONA
+       ============================================================ -->
+  <nav id="nav" aria-label="Nawigacja główna">
+    <div class="container">
+      <div class="nav-inner">
+        <!-- 📝 EDYTUJ TUTAJ: skrót nazwiska w nawigacji -->
+        <a href="#header" class="nav-name">[I. Nazwisko]</a>
+        <a href="#o-mnie"       class="nav-link">O mnie</a>
+        <a href="#doswiadczenie" class="nav-link">Doświadczenie</a>
+        <a href="#projekty"     class="nav-link">Projekty</a>
+        <a href="#kontakt"      class="nav-link">Kontakt</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================================
+         SEKCJA: O MNIE / WYKSZTAŁCENIE
+         ============================================================ -->
+    <section id="o-mnie">
+      <div class="container">
+
+        <p class="section-label fade-in">O mnie</p>
+        <h2 class="fade-in delay-1">Wykształcenie<br>i biografia</h2>
+
+        <div class="about-grid">
+
+          <div class="fade-in delay-2">
+            <!-- 📝 EDYTUJ TUTAJ: krótki akapit bio (3–5 zdań) -->
+            <p>
+              Jestem badaczem zajmującym się [Twoja dziedzina, np. historią myśli politycznej XIX i XX wieku].
+              Moje zainteresowania koncentrują się wokół [np. recepcji romantyzmu w literaturze emigracyjnej].
+              Łączę metody [np. historii intelektualnej, analizy dyskursu i filologii], by opisywać
+              [np. napięcia między tradycją a nowoczesnością w kulturze polskiej].
+            </p>
+            <p style="margin-top: var(--sp-3)">
+              <!-- 📝 EDYTUJ TUTAJ: drugie zdanie bio lub dodatkowy kontekst -->
+              Publikuję w [np. pismach akademickich i eseistycznych], prowadzę zajęcia z [np. historii literatury]
+              na [Nazwa uczelni]. Jestem przekonany, że humanistyka ma coś ważnego do powiedzenia
+              o teraźniejszości.
+            </p>
+          </div>
+
+          <div class="fade-in delay-3">
+            <p class="text-mono" style="margin-bottom: var(--sp-3)">Wykształcenie</p>
+            <!-- 📝 EDYTUJ TUTAJ: lista wykształcenia — kopiuj elementy <li> by dodać kolejne -->
+            <ul class="education-list">
+
+              <li>
+                <span class="edu-year">2022</span>
+                <div>
+                  <strong>[Stopień naukowy, np. Doktorat]</strong><br>
+                  <span class="text-small text-muted">[Nazwa kierunku / dyscypliny]<br>[Nazwa uczelni], [Miasto]</span>
+                </div>
+              </li>
+
+              <li>
+                <span class="edu-year">2017</span>
+                <div>
+                  <strong>[Stopień, np. Magisterium]</strong><br>
+                  <span class="text-small text-muted">[Nazwa kierunku]<br>[Nazwa uczelni], [Miasto]</span>
+                </div>
+              </li>
+
+              <li>
+                <span class="edu-year">2015</span>
+                <div>
+                  <strong>[Stopień, np. Licencjat]</strong><br>
+                  <span class="text-small text-muted">[Nazwa kierunku]<br>[Nazwa uczelni], [Miasto]</span>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEKCJA: DOŚWIADCZENIE / ZAINTERESOWANIA BADAWCZE
+         ============================================================ -->
+    <section id="doswiadczenie">
+      <div class="container">
+
+        <p class="section-label fade-in">Doświadczenie</p>
+        <h2 class="fade-in delay-1">Stanowiska,<br>stypendia i granty</h2>
+
+        <!-- 📝 EDYTUJ TUTAJ: linia czasowa — kopiuj bloki .timeline-item by dodać kolejne pozycje -->
+        <ul class="timeline fade-in delay-2">
+
+          <li class="timeline-item">
+            <div class="timeline-date">2023 — obecnie</div>
+            <div>
+              <p class="timeline-title">[Nazwa stanowiska, np. Adiunkt]</p>
+              <p class="timeline-org">[Nazwa katedry / instytutu], [Nazwa uczelni]</p>
+              <p class="timeline-desc">
+                [Krótki opis obowiązków lub obszaru badań, 1–2 zdania. Np. prowadzenie zajęć
+                z historii literatury, praca nad projektem badawczym dotyczącym…]
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline-item">
+            <div class="timeline-date">2021 — 2023</div>
+            <div>
+              <p class="timeline-title">[Np. Stypendium podoktorskie]</p>
+              <p class="timeline-org">[Nazwa instytucji finansującej lub goszczącej]</p>
+              <p class="timeline-desc">
+                [Opis projektu stypendialnego lub grantu. Np. badania nad recepcją myśli
+                [autora] w kręgu emigracji londyńskiej, finansowane przez [instytucję].]
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline-item">
+            <div class="timeline-date">2019 — 2021</div>
+            <div>
+              <p class="timeline-title">[Np. Asystent badawczy / Grant NCN]</p>
+              <p class="timeline-org">[Nazwa projektu lub instytucji]</p>
+              <p class="timeline-desc">
+                [Opis roli i zakresu zadań. Np. kwerenda archiwalna, redakcja krytyczna
+                tekstów, współautorstwo artykułów naukowych.]
+              </p>
+            </div>
+          </li>
+
+          <li class="timeline-item">
+            <div class="timeline-date">2018</div>
+            <div>
+              <p class="timeline-title">[Np. Stypendium zagraniczne / Fellowship]</p>
+              <p class="timeline-org">[Nazwa uczelni lub archiwum], [Kraj]</p>
+              <p class="timeline-desc">
+                [Np. pobyt badawczy w archiwum X, praca nad materiałami do rozprawy doktorskiej.]
+              </p>
+            </div>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEKCJA: PROJEKTY / PORTFOLIO
+         ============================================================ -->
+    <section id="projekty">
+      <div class="container">
+
+        <p class="section-label fade-in">Projekty</p>
+        <h2 class="fade-in delay-1">Publikacje<br>i portfolio</h2>
+
+        <!-- 📝 EDYTUJ TUTAJ: karty projektów — kopiuj .project-card by dodać kolejne -->
+        <div class="projects-grid fade-in delay-2">
+
+          <div class="project-card">
+            <!-- 📝 EDYTUJ TUTAJ: typ publikacji (Monografia / Artykuł / Esej / Praca zbiorowa) -->
+            <p class="project-tag">Monografia · 2024</p>
+            <p class="project-title">[Tytuł książki lub artykułu]</p>
+            <p class="project-desc">
+              [Krótki opis, 2–3 zdania. O czym jest praca, jaki problem rozwiązuje,
+              co wyróżnia ją na tle literatury przedmiotu.]
+            </p>
+            <div class="project-links">
+              <!-- 📝 EDYTUJ TUTAJ: podmień href na link do publikacji lub archiwum -->
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Czytaj →</a>
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Wydawca</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <p class="project-tag">Artykuł naukowy · 2023</p>
+            <p class="project-title">[Tytuł artykułu]</p>
+            <p class="project-desc">
+              [Krótki opis i kontekst. Np. Artykuł ukazał się w [nazwa pisma],
+              analizuje [temat] z perspektywy [metodologia].]
+            </p>
+            <div class="project-links">
+              <a href="#" class="link-btn" target="_blank" rel="noopener">DOI →</a>
+              <a href="#" class="link-btn" target="_blank" rel="noopener">PDF</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <p class="project-tag">Esej · 2022</p>
+            <p class="project-title">[Tytuł eseju lub tekstu popularnonaukowego]</p>
+            <p class="project-desc">
+              [Opis eseju. Np. Tekst opublikowany w [magazyn], poświęcony [zagadnieniu],
+              napisany z myślą o szerokim audytorium.]
+            </p>
+            <div class="project-links">
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Czytaj →</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <p class="project-tag">Praca zbiorowa · 2021</p>
+            <p class="project-title">[Tytuł tomu / rozdziału]</p>
+            <p class="project-desc">
+              [Opis wkładu autorskiego. Np. Rozdział w tomie zbiorowym pod redakcją
+              [imię nazwisko], wydanym przez [wydawnictwo].]
+            </p>
+            <div class="project-links">
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Google Books →</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <p class="project-tag">Recenzja / Przekład · 2020</p>
+            <p class="project-title">[Tytuł recenzji lub przekładu]</p>
+            <p class="project-desc">
+              [Krótki opis. Np. Recenzja książki [autor, tytuł] opublikowana
+              w [pismo], ss. X–Y.]
+            </p>
+            <div class="project-links">
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Pismo →</a>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <p class="project-tag">Projekt badawczy · 2019–2021</p>
+            <p class="project-title">[Tytuł grantu / projektu]</p>
+            <p class="project-desc">
+              [Opis projektu. Np. Grant finansowany przez [NCN / MNiSW / inne],
+              realizowany w [instytucja], wyniki opublikowane w [miejsce].]
+            </p>
+            <div class="project-links">
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Raport →</a>
+              <a href="#" class="link-btn" target="_blank" rel="noopener">Rejestr grantów</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEKCJA: KONTAKT
+         ============================================================ -->
+    <section id="kontakt">
+      <div class="container">
+
+        <p class="section-label fade-in">Kontakt</p>
+        <h2 class="fade-in delay-1">Napisz<br>do mnie</h2>
+
+        <div class="contact-grid fade-in delay-2">
+
+          <div>
+            <span class="contact-label">E-mail</span>
+            <p class="contact-value">
+              <!-- 📝 EDYTUJ TUTAJ: adres e-mail -->
+              <a href="mailto:[adres@email.pl]">[adres@email.pl]</a>
+            </p>
+
+            <span class="contact-label">Adres instytucjonalny</span>
+            <p class="contact-value text-small text-mid">
+              <!-- 📝 EDYTUJ TUTAJ: adres pocztowy / instytucja -->
+              [Nazwa katedry / Instytutu]<br>
+              [Nazwa uczelni]<br>
+              [ul. Adres 00, 00-000 Miasto]
+            </p>
+
+            <span class="contact-label" style="margin-top: var(--sp-3); display: block;">Strona instytucjonalna</span>
+            <p class="contact-value">
+              <!-- 📝 EDYTUJ TUTAJ: link do strony pracowniczej na uczelni -->
+              <a href="#" class="link-btn" target="_blank" rel="noopener">[uczelnia.edu.pl/pracownik] →</a>
+            </p>
+          </div>
+
+          <div>
+            <span class="contact-label">Profile naukowe</span>
+            <ul class="social-list">
+
+              <li>
+                <span class="social-platform">ORCID</span>
+                <!-- 📝 EDYTUJ TUTAJ: link do profilu ORCID -->
+                <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener" class="link-btn">
+                  0000-0000-0000-0000 →
+                </a>
+              </li>
+
+              <li>
+                <span class="social-platform">ResearchGate</span>
+                <!-- 📝 EDYTUJ TUTAJ: link do profilu ResearchGate -->
+                <a href="https://www.researchgate.net/profile/[TwojeNazwisko]" target="_blank" rel="noopener" class="link-btn">
+                  researchgate.net →
+                </a>
+              </li>
+
+              <li>
+                <span class="social-platform">LinkedIn</span>
+                <!-- 📝 EDYTUJ TUTAJ: link do profilu LinkedIn -->
+                <a href="https://www.linkedin.com/in/[twoj-profil]" target="_blank" rel="noopener" class="link-btn">
+                  linkedin.com →
+                </a>
+              </li>
+
+              <li>
+                <span class="social-platform">Academia.edu</span>
+                <!-- 📝 EDYTUJ TUTAJ: link do profilu Academia.edu (opcjonalnie usuń jeśli nieużywane) -->
+                <a href="https://[uczelnia].academia.edu/[TwojeNazwisko]" target="_blank" rel="noopener" class="link-btn">
+                  academia.edu →
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+
+        <div>
+          <!-- 📝 EDYTUJ TUTAJ: imię i nazwisko w stopce -->
+          <p class="text-small text-muted">© <span id="year"></span> [Twoje Imię i Nazwisko]</p>
+          <!-- 📝 EDYTUJ TUTAJ: data ostatniej aktualizacji treści -->
+          <p class="text-mono" style="margin-top: var(--sp-1)">
+            Ostatnia aktualizacja: [Miesiąc Rok]
+          </p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Nawigacja stopki">
+          <a href="#o-mnie">O mnie</a>
+          <a href="#doswiadczenie">Doświadczenie</a>
+          <a href="#projekty">Projekty</a>
+          <a href="#kontakt">Kontakt</a>
+          <!-- 📝 EDYTUJ TUTAJ: link do CV PDF -->
+          <a href="cv.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+        </nav>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SKRYPT: rok w stopce + płynna nawigacja + fadeIn przy scroll
+       ============================================================ -->
+  <script>
+    // Rok w stopce
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Fade-in przy przewijaniu (Intersection Observer)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
+
+<!--
+=================================================================
+📖 INSTRUKCJA EDYCJI I PUBLIKACJI — DLA LAIKA TECHNICZNEGO
+=================================================================
+
+KROK 1 — EDYCJA TREŚCI:
+  Otwórz plik index.html w dowolnym edytorze tekstu (np. Notatnik,
+  TextEdit, VS Code). Wyszukaj frazy w nawiasach kwadratowych,
+  np. [Twoje Imię i Nazwisko], i zastąp je właściwymi danymi.
+  Komentarze <!-- 📝 EDYTUJ TUTAJ: ... --> wskazują dokładnie
+  które fragmenty należy zmienić. Zapisz plik.
+
+KROK 2 — WGRANIE NA GITHUB:
+  1. Utwórz konto na github.com (jeśli nie masz).
+  2. Kliknij „+" → „New repository". Nazwij je np. „portfolio".
+     Ustaw jako Public. NIE dodawaj README.
+  3. Na stronie repozytorium kliknij „Add file" → „Upload files",
+     przeciągnij plik index.html (i opcjonalnie cv.pdf),
+     zatwierdź przyciskiem „Commit changes".
+
+KROK 3 — WŁĄCZENIE GITHUB PAGES:
+  1. Wejdź w zakładkę „Settings" repozytorium.
+  2. W lewym menu wybierz „Pages".
+  3. W sekcji „Branch" wybierz „main" i folder „/ (root)",
+     kliknij „Save".
+  4. Po chwili (1–2 min) strona będzie dostępna pod adresem:
+     https://[TwójLogin].github.io/[NazwaRepozytorium]/
+
+WSKAZÓWKA: po każdej edycji treści wystarczy ponownie wgrać
+plik index.html przez „Add file" → „Upload files" — strona
+zaktualizuje się automatycznie w ciągu kilkudziesięciu sekund.
+=================================================================
+-->
